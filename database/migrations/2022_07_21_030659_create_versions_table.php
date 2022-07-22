@@ -14,7 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('versions', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->unsignedInteger('brand_id');
+            $table->foreign('brand_id')->references('id')->
+            on('brands') ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->string('version_name',70);
             $table->timestamps();
         });
     }

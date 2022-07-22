@@ -15,15 +15,16 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
-            $table-> string('cusname',50);
-            $table-> string('cusphonenumber',50);
-            $table->date('repairday');
-            $table->date('receivedday');
-            $table-> string('phonename',30);
-            $table-> string('phoneemei',15);
+            $table-> string('cus_name',50);
+            $table-> string('cusphone_number',50);
+            $table->date('repair_day');
+            $table->date('received_day');
+            $table-> string('phone_name',30);
+            $table-> string('phone_emei',15);
             $table-> string('model',30);
             $table-> string('note',250);
-            $table-> integer('productid')->unsigned();
+            $table->unsignedInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

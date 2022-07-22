@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('admin', function (Blueprint $table) {
             $table->increments('id');
-            $table->increments('email',50);
+            $table->string('email',50);
             $table->string('password',30);
             $table->timestamps();
         });
