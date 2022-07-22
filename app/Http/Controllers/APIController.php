@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 // use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Version;
@@ -15,49 +16,63 @@ use App\Models\Customer;
 class APIController extends Controller
 {
     /**
-     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function version()
     {
-        //
-        $cars = Car::join('mfs', 'mfs.id', 'cars.mf_id')
-            ->select('mfs.mf_name as name_mfs', 'cars.*')
+
+        $versions = Version::join('brands', 'brands.id', 'versions.brand_id')
+            ->select('brands.name', 'versions.*')
             ->paginate(20);
-        if ($cars) {
-            return response()->json($cars, Response::HTTP_OK);
+        if ($versions) {
+            return response()->json($versions, Response::HTTP_OK);
         } else {
             return response()->json([]);
         }
     }
 
     /**
-     * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function products()
     {
-        //
+        $products = Product::join('services', 'services.id', 'products.service_id')
+        ->select('services.service_name', 'products.*')
+        ->paginate(20);
+    if ($products) {
+        return response()->json($products, Response::HTTP_OK);
+    } else {
+        return response()->json([]);
+    }
     }
 
     /**
-     * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
+    public function customer()
+    {
+        $customers = Customer::join('products', 'products.id', 'customers.product_id')
+        ->select('products.product_name', 'customers.*')
+        ->paginate(20);
+    if ($customers) {
+        return response()->json($customers, Response::HTTP_OK);
+    } else {
+        return response()->json([]);
+    }
+    }
+
+
+    public function getProductDetail($id){
+        $products = Product::find($id);
+        return response()->json($products);
+    }
     public function store(Request $request)
     {
         //
     }
 
     /**
-     * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -65,10 +80,7 @@ class APIController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -76,11 +88,7 @@ class APIController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
@@ -88,10 +96,7 @@ class APIController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
