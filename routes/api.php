@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('/products',[APIController::class,'products']);
 Route::get('/products/{id}',[APIController::class,'getProductDetail']);
+Route::post('/products',[APIController::class,'createProduct']);
 
 // Route::get('versions', APIController::class, 'index');
 // Route::get('products', APIController::class, 'product');
