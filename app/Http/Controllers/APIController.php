@@ -4,19 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 // use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Version;
 use App\Models\Service;
 use App\Models\Admin;
 use App\Models\Customer;
-
-use Illuminate\Http\Response;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
 
 class APIController extends Controller
 {
@@ -51,46 +46,6 @@ class APIController extends Controller
     }
     }
 
-    public function createProduct(Request $request)
-    {
-        $validation = Validator::make(
-            $request->all(),
-            [
-                "description"  => "required",
-                "model" => "required",
-                "produced_on"  => "required|date",
-                'image' => 'mimes:jpeg,jpg,png,gif|max:10000'
-            ]
-        );
-
-        if ($validation->fails()) {
-            $response = array('status' => 'error', 'errors' => $validation->errors()->toArray());
-            return response()->json($response);
-        }
-
-        $name = '';
-        // $request->validate([
-        //     'title'=>'required',
-        //     'description'=>'required',
-        //     'image'=>'required|image'
-        // ]);
-
-        // try{
-        //     $imageName = Str::random().'.'.$request->image->getClientOriginalExtension();
-        //     Storage::disk('public')->putFileAs('product/image', $request->image,$imageName);
-        //     Product::create($request->post()+['image'=>$imageName]);
-
-        //     return response()->json([
-        //         'message'=>'Product Created Successfully!!'
-        //     ]);
-        // }catch(\Exception $e){
-        //     \Log::error($e->getMessage());
-        //     return response()->json([
-        //         'message'=>'Something goes wrong while creating a product!!'
-        //     ],500);
-        // }
-    }
-
     /**
      *
      */
@@ -110,5 +65,80 @@ class APIController extends Controller
     public function getProductDetail($id){
         $products = Product::find($id);
         return response()->json($products);
+    }
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     *
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     *
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     *
+     */
+    public function update(Request $req, $id)
+    {
+        $name = '';
+        
+        if($req -> hasFile('img')){
+            $this->validate($req,[
+                'img' =>'mimes:jpg,png,jpeg|max:2048',
+            ],[
+                'img.mimes'=>'Chỉ chấp nhận files ảnh',
+                'img.max' => 'Chỉ chấp nhận files ảnh dưới 2Mb',
+
+            ]);
+            $file =$req ->file(('img'));
+            $name = time().'_'.$file->getClientOriginalName();
+            $destinationPath=public_path('images');
+            $file -> move($destinationPath, $name);
+        }
+        $this->validate($req,[
+            'product_name'=>'required', 
+            'description'=>'required', 
+            'price'=>'required', 
+            'version_id'=>'required',
+            'service_id'=>'required',
+        ],[
+            'product_name.required' =>'Bạn chưa nhập mô tả',
+            'description.required' =>'Bạn chưa nhập author',
+            'price.required' =>'Bạn chưa nhập ngày sản xuất',
+            'version_id.required' =>'Bạn chưa nhập ngày sản xuất',
+            'service_id.required' =>'Bạn chưa nhập ngày sản xuất',
+            'produced_on.required' =>'Bạn chưa nhập ngày sản xuất',
+            'produced_on.date' =>'Cột produced_on phải là kiểu ngày!'
+        ]);
+        $product= Product::find($id);//Khac vs store()
+        $product->product_name=$req->product_name;
+        $product->description=$req->description;
+        $product->price=$req->price;
+        $product->version_id=$req->version_id;
+        $product->service_id=$req->service_id;
+        $product->img=$name;
+        $product->save();
+
+        return 'ok';
+    }
+
+    /**
+     *
+     */
+    public function destroy($id)
+    {
+        //
     }
 }
