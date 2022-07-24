@@ -2,7 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\APIController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Customer\CustomerController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Version\VersionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,13 +21,18 @@ use App\Http\Controllers\APIController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/products',[APIController::class,'products']);
-Route::get('/products/{id}',[APIController::class,'getProductDetail']);
 
-// Route::get('versions', APIController::class, 'index');
-// Route::get('products', APIController::class, 'product');
+Route::resource('/products',ProductController::class);
+// Route::get('/products',[ProductController::class,'index']);
+// Route::get('/products/{id}',[ProductController::class,'show']);
+// Route::DELETE('/delete-product/{id}',[ProductController::class,'destroy']);
+// Route::put('/update-product/{id}',[ProductController::class,'update']);
+// Route::put('/products',[ProductController::class,'store']);
 
-Route::get('/versions',[APIController::class,'version']);
+Route::get('/admin',[AdminController::class,'index']);
 
-Route::get('/customers',[APIController::class,'customer']);
+Route::get('/versions',[VersionController::class,'index']);
 
+Route::get('/customers',[CustomerController::class,'index']);
+Route::get('/customers/{id}',[CustomerController::class,'show']);
+Route::DELETE('/delete-customer/{id}',[CustomerController::class,'destroy']);
