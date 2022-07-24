@@ -48,7 +48,7 @@ class ProductController extends Controller
     public function store(Request $req)
     {
         $name="";
-        if ($req->hasfile('image')) {
+        if ($req->hasfile('img')) {
             # code...
             $this->validate($req,[
                 'img'=>'mimes:jpg,png,gif,jpeg|max:4048'
