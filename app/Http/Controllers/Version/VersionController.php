@@ -18,7 +18,7 @@ class VersionController extends Controller
     {
         $versions = Version::join('brands', 'brands.id', 'versions.brand_id')
             ->select('brands.name', 'versions.*')
-            ->paginate(20);
+            ->get();
         if ($versions) {
             return response()->json($versions, Response::HTTP_OK);
         } else {
@@ -42,9 +42,21 @@ class VersionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        $this->validate($req,[
+            'brand_id'=>'required', 
+            'version_name'=>'required'
+        ],[
+            'brand_id.required' =>'No empty',
+            'version_name.required' =>'No empty'
+        ]);
+
+        $version=new Version();
+        $version->brand_id=$req->brand_id;
+        $version->version_name=$req->version_name;
+        $version->save();
+        return 'Bạn đã thêm thành công';
     }
 
     /**
@@ -66,7 +78,7 @@ class VersionController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -89,6 +101,12 @@ class VersionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $products = Version::find($id);
+        //Xoa luon anh trong thu muc, neu ko co cau lenh nay thi khi xoa anh van con trong thu muc
+        // if (File::exists($linkImage)) {
+        //     File::delete($linkImage);
+        // }
+        $products->delete();
+        return 'Ok! Xoa duoc roi:))';
     }
 }

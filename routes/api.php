@@ -32,6 +32,8 @@ Route::resource('/products',ProductController::class);
 Route::get('/admin',[AdminController::class,'index']);
 
 Route::get('/versions',[VersionController::class,'index']);
+Route::post('/versions',[VersionController::class,'store']);
+Route::delete('/versions/{version}',[VersionController::class,'destroy']);
 
 Route::get('/customers',[CustomerController::class,'index']);
 Route::get('/customers/{id}',[CustomerController::class,'show']);
