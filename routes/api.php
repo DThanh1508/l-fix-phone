@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\QA\QAController;
 use App\Http\Controllers\Version\VersionController;
 
 /*
@@ -38,3 +39,5 @@ Route::delete('/versions/{version}',[VersionController::class,'destroy']);
 Route::get('/customers',[CustomerController::class,'index']);
 Route::get('/customers/{id}',[CustomerController::class,'show']);
 Route::DELETE('/delete-customer/{id}',[CustomerController::class,'destroy']);
+
+Route::get('/q&a', [QAController::class, 'index']);
