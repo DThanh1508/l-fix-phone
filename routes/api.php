@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Version\VersionController;
+use App\Http\Controllers\QA\QAController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,10 @@ Route::resource('/products',ProductController::class);
 Route::get('/admin',[AdminController::class,'index']);
 
 Route::get('/versions',[VersionController::class,'index']);
+Route::post('/versions',[VersionController::class,'store']);
+Route::delete('/versions/{version}',[VersionController::class,'destroy']);
 
 Route::get('/customers',[CustomerController::class,'index']);
 Route::get('/customers/{id}',[CustomerController::class,'show']);
 Route::DELETE('/delete-customer/{id}',[CustomerController::class,'destroy']);
+Route::get('/q&a', [QAController::class, 'index']);

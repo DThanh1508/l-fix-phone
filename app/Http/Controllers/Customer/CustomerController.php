@@ -18,7 +18,7 @@ class CustomerController extends Controller
     {
         $customers = Customer::join('products', 'products.id', 'customers.product_id')
         ->select('products.product_name', 'customers.*')
-        ->paginate(20);
+        ->get();
         if ($customers) {
             return response()->json($customers, Response::HTTP_OK);
         } else {

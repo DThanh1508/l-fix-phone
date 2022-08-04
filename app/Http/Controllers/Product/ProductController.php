@@ -21,7 +21,7 @@ class ProductController extends Controller
     {
         $products = Product::join('services', 'services.id', 'products.service_id')
             ->select('services.service_name', 'products.*')
-            ->paginate(20);
+            ->get();
         if ($products) {
             return response()->json($products, Response::HTTP_OK);
         } else {
@@ -62,12 +62,14 @@ class ProductController extends Controller
             $file->move($destinationPath,$name);
         }
         $this->validate($req,[
+            'img' =>'required',
             'product_name'=>'required', 
             'description'=>'required', 
             'price'=>'required', 
             'version_id'=>'required', 
             'service_id'=>'required', 
         ],[
+            'img.required' => 'Bạn chưa chọn hình ảnh',
             'product_name.required' =>'Bạn chưa nhập tên điện thoại',
             'description.required' =>'Bạn chưa nhập mô tả',
             'price.required' =>'Bạn chưa nhập giá',
@@ -81,7 +83,7 @@ class ProductController extends Controller
         $product->price=$req->price;
         $product->version_id=$req->version_id;
         $product->service_id=$req->service_id;
-        $product->img=$name;
+        $product->img=$req->img;
         $product->save();
         return 'Bạn đã thêm thành công';
     }
