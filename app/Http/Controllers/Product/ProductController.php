@@ -47,20 +47,6 @@ class ProductController extends Controller
      */
     public function store(Request $req)
     {
-        $name="";
-        if ($req->hasfile('img')) {
-            # code...
-            $this->validate($req,[
-                'img'=>'mimes:jpg,png,gif,jpeg|max:4048'
-            ],[
-                'img.mimes'=>'Chỉ chấp nhận file hình ảnh',
-                'img.max'=> 'Chỉ chấp nhận hình ảnh dưới 2mb'
-            ]);
-            $file = $req -> file('img');
-            $name = time().'_'.$file->getClientOriginalName();
-            $destinationPath=public_path('/images');
-            $file->move($destinationPath,$name);
-        }
         $this->validate($req,[
             'img' =>'required',
             'product_name'=>'required', 
