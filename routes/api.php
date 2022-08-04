@@ -7,6 +7,7 @@ use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Version\VersionController;
 use App\Http\Controllers\QA\QAController;
+use App\Models\QA;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,4 +40,13 @@ Route::delete('/versions/{version}',[VersionController::class,'destroy']);
 Route::get('/customers',[CustomerController::class,'index']);
 Route::get('/customers/{id}',[CustomerController::class,'show']);
 Route::DELETE('/delete-customer/{id}',[CustomerController::class,'destroy']);
-Route::get('/q&a', [QAController::class, 'index']);
+
+Route::get('/q_a', [QAController::class, 'index']);
+Route::post('/q_a', [QAController::class, 'store']);
+Route::get('/q_a/{qa}', [QAController::class, 'show']);
+Route::put('/q_a/{qa}', [QAController::class, 'update']);
+Route::delete('/q_a/{qa}', [QAController::class, 'destroy']);
+
+// Route::resource('/q&a',[QAController::class]);
+
+

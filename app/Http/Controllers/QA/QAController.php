@@ -5,6 +5,7 @@ namespace App\Http\Controllers\QA;
 use App\Http\Controllers\Controller;
 use App\Models\QA;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class QAController extends Controller
 {
@@ -26,6 +27,7 @@ class QAController extends Controller
      */
     public function create()
     {
+        return view('create');
     
     }
 
@@ -45,15 +47,15 @@ class QAController extends Controller
             'content'=>'required', 
         ],[
             'image.required' => 'Bạn chưa chọn hình ảnh',
-            'title.required' =>'Bạn chưa nhập chủ đề câu hỏi',
-            'content.required' =>'Bạn chưa nhập nội dung',
+            'title.required' =>'Bạn chưa nhập câu hỏi',
+            'content.required' =>'Bạn chưa nhập câu trả lời',
         ]);
 
-        $qa=new QA();
-        $qa->title=$req->title;
-        $qa->content=$req->content;
-        $qa->image=$req->image;
-        $qa->save();
+        $q_a=new QA();
+        $q_a->title=$req->title;
+        $q_a->content=$req->content;
+        $q_a->image=$req->image;
+        $q_a->save();
         return 'Bạn đã thêm thành công';
     }
 
@@ -65,7 +67,8 @@ class QAController extends Controller
      */
     public function show($id)
     {
-        //
+        $qa = QA::find($id);
+        return response()->json($qa);
     }
 
     /**
@@ -106,16 +109,13 @@ class QAController extends Controller
             'title'=>'required', 
             'content'=>'required', 
         ],[
-            'q_a_name.required' =>'Bạn chưa nhập tên điện thoại',
-            'description.required' =>'Bạn chưa nhập mô tả',
-            'content.required' =>'Bạn chưa nhập giá',
+            'title.required' =>'Bạn chưa nhập câu hỏi',
+            'content.required' =>'Bạn chưa nhập câu trả lời',
         ]);
         $q_a= QA::find($id);
-        $q_a->q_a_name=$req->q_a_name;
+        $q_a->title=$req->title;
         $q_a->content=$req->content;
-        $q_a->version_id=$req->version_id;
-        $q_a->service_id=$req->service_id;
-        $q_a->img=$name;
+        $q_a->image=$name;
         $q_a->save();
 
         return 'ok';
@@ -129,9 +129,9 @@ class QAController extends Controller
      */
     public function destroy($id)
     {
-        $QA = QA::find($id);
-        $linkImage = public_path('images/') . $QA->image;
-        $QA->delete();
+        $q_a = QA::find($id);
+        $linkImage = public_path('images/') . $q_a->image;
+        $q_a->delete();
         return 1;
     }
 }
