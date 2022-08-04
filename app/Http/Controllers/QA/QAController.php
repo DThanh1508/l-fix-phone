@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\QA;
 
+use App\Http\Controllers\Controller;
 use App\Models\QA;
 use Illuminate\Http\Request;
 
@@ -26,8 +26,10 @@ class QAController extends Controller
      */
     public function create()
     {
-        //
+    
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -35,9 +37,24 @@ class QAController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        $this->validate($req,[
+            'image' =>'required',
+            'title'=>'required', 
+            'content'=>'required', 
+        ],[
+            'image.required' => 'Bạn chưa chọn hình ảnh',
+            'title.required' =>'Bạn chưa nhập chủ đề câu hỏi',
+            'content.required' =>'Bạn chưa nhập nội dung',
+        ]);
+
+        $qa=new QA();
+        $qa->title=$req->title;
+        $qa->content=$req->content;
+        $qa->image=$req->image;
+        $qa->save();
+        return 'Bạn đã thêm thành công';
     }
 
     /**
@@ -59,7 +76,7 @@ class QAController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -69,9 +86,39 @@ class QAController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $req, $id)
     {
-        //
+        $name = '';        
+        if($req -> hasFile('images')){
+            $this->validate($req,[
+                'image' =>'mimes:jpg,png,jpeg|max:2048',
+            ],[
+                'image.mimes'=>'Chỉ chấp nhận files ảnh',
+                'image.max' => 'Chỉ chấp nhận files ảnh dưới 2Mb',
+
+            ]);
+            $file =$req ->file(('image'));
+            $name = time().'_'.$file->getClientOriginalName();
+            $destinationPath=public_path('images');
+            $file -> move($destinationPath, $name);
+        }
+        $this->validate($req,[
+            'title'=>'required', 
+            'content'=>'required', 
+        ],[
+            'q_a_name.required' =>'Bạn chưa nhập tên điện thoại',
+            'description.required' =>'Bạn chưa nhập mô tả',
+            'content.required' =>'Bạn chưa nhập giá',
+        ]);
+        $q_a= QA::find($id);
+        $q_a->q_a_name=$req->q_a_name;
+        $q_a->content=$req->content;
+        $q_a->version_id=$req->version_id;
+        $q_a->service_id=$req->service_id;
+        $q_a->img=$name;
+        $q_a->save();
+
+        return 'ok';
     }
 
     /**
@@ -82,6 +129,9 @@ class QAController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $QA = QA::find($id);
+        $linkImage = public_path('images/') . $QA->image;
+        $QA->delete();
+        return 1;
     }
 }
