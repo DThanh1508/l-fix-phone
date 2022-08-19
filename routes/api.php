@@ -30,6 +30,7 @@ Route::resource('/products',ProductController::class);
 // Route::DELETE('/delete-product/{id}',[ProductController::class,'destroy']);
 // Route::put('/update-product/{id}',[ProductController::class,'update']);
 // Route::put('/products',[ProductController::class,'store']);
+// Route::get('/count-products',[ProductController::class,'countProduct']);
 
 Route::get('/admin',[AdminController::class,'index']);
 
@@ -38,6 +39,7 @@ Route::post('/versions',[VersionController::class,'store']);
 Route::delete('/versions/{version}',[VersionController::class,'destroy']);
 
 Route::get('/customers',[CustomerController::class,'index']);
+Route::get('/count-customer',[CustomerController::class,'Count']);
 Route::get('/customers/{id}',[CustomerController::class,'show']);
 Route::DELETE('/delete-customer/{id}',[CustomerController::class,'destroy']);
 

@@ -28,6 +28,14 @@ class ProductController extends Controller
             return response()->json([]);
         }
     }
+    public function countProduct()
+    {
+            $product = Product::all()->count();
+            return $product;
+            
+            // return response()->json($admin);
+        
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -106,28 +114,16 @@ class ProductController extends Controller
      */
     public function update(Request $req, $id)
     {
-        $name = '';        
-        if($req -> hasFile('img')){
-            $this->validate($req,[
-                'img' =>'mimes:jpg,png,jpeg|max:2048',
-            ],[
-                'img.mimes'=>'Chỉ chấp nhận files ảnh',
-                'img.max' => 'Chỉ chấp nhận files ảnh dưới 2Mb',
-
-            ]);
-            $file =$req ->file(('img'));
-            $name = time().'_'.$file->getClientOriginalName();
-            $destinationPath=public_path('images');
-            $file -> move($destinationPath, $name);
-        }
         $this->validate($req,[
             'product_name'=>'required', 
             'description'=>'required', 
             'price'=>'required', 
+            'img' => 'required',
         ],[
             'product_name.required' =>'Bạn chưa nhập tên điện thoại',
             'description.required' =>'Bạn chưa nhập mô tả',
             'price.required' =>'Bạn chưa nhập giá',
+            'img.required' => 'Bạn chưa chọn ảnh!'
         ]);
         $product= Product::find($id);
         $product->product_name=$req->product_name;
@@ -135,7 +131,7 @@ class ProductController extends Controller
         $product->price=$req->price;
         $product->version_id=$req->version_id;
         $product->service_id=$req->service_id;
-        $product->img=$name;
+        $product->img=$req->img;
         $product->save();
 
         return 'ok';

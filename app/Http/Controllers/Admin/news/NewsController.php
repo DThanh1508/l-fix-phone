@@ -47,7 +47,7 @@ class NewsController extends Controller
             ]);
             $image->removeAttribute('src');
             // link https://viblo.asia/p/tim-hieu-package-cloudinary-trong-laravel-RnB5pnArZPG#_demo-12
-            $image->setAttribute('src', $cloudinaryUpload->getSecurePath());
+            // $image->setAttribute('src', $cloudinaryUpload->getSecurePath());
         }
         $news = News::create($request->all());
         return response()->json(['message' => 'Tạo tin tức thành công!',
