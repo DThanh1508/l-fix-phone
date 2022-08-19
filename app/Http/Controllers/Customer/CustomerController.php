@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -57,6 +58,13 @@ class CustomerController extends Controller
     {
         $customers = Customer::find($id);
         return response()->json($customers);
+    } 
+    public function Count(){
+        $customers = Customer::whereMonth('created_at', Carbon::now()->month)->get();
+        $wordCount = $customers->count();
+        return $wordCount;
+        
+        // return response()->json($admin);
     }
 
     /**

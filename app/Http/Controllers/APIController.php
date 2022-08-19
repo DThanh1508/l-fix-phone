@@ -34,16 +34,29 @@ class APIController extends Controller
     /**
      *
      */
+    // public function products()
+    // {
+    //     $products = Product::join('services', 'services.id', 'products.service_id')
+    //     ->select('services.service_name', 'products.*')
+    //     ->paginate(20);
+    // if ($products) {
+    //     return response()->json($products, Response::HTTP_OK);
+    // } else {
+    //     return response()->json([]);
+    // }
+    // }
+
+    
     public function products()
     {
         $products = Product::join('services', 'services.id', 'products.service_id')
-        ->select('services.service_name', 'products.*')
-        ->paginate(20);
-    if ($products) {
-        return response()->json($products, Response::HTTP_OK);
-    } else {
-        return response()->json([]);
-    }
+            ->select('services.service_name', 'products.*')
+            ->get();
+        if ($products) {
+            return response()->json($products, Response::HTTP_OK);
+        } else {
+            return response()->json([]);
+        }
     }
 
     /**
@@ -140,5 +153,11 @@ class APIController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function getAllServices() {
+        return Service::get();
+    }
+    public function getProductsByServiceId($id) {
+        return Product::where("service_id", $id)->get();
     }
 }

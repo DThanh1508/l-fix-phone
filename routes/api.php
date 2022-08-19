@@ -47,6 +47,6 @@ Route::get('/q_a/{qa}', [QAController::class, 'show']);
 Route::put('/q_a/{qa}', [QAController::class, 'update']);
 Route::delete('/q_a/{qa}', [QAController::class, 'destroy']);
 
+Route::get("services", [APIController::class, "getAllServices"]);
+Route::get("service/{id}", [APIController::class, "getProductsByServiceId"]);
 // Route::resource('/q&a',[QAController::class]);
-
-
