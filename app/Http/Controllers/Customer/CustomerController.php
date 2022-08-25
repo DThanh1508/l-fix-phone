@@ -84,7 +84,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customers = Customer::find($id);
-        return response()->json($customers);
+        return response()->json($customers,Response::HTTP_OK);
     }
 
     /**
@@ -119,11 +119,7 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customers = Customer::find($id);
-        //Xoa luon anh trong thu muc, neu ko co cau lenh nay thi khi xoa anh van con trong thu muc
-        // if (File::exists($linkImage)) {
-        //     File::delete($linkImage);
-        // }
         $customers->delete();
-        return 2;
+        return Response::HTTP_OK;
     }
 }

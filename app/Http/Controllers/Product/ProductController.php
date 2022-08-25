@@ -71,7 +71,7 @@ class ProductController extends Controller
         $product->service_id=$req->service_id;
         $product->img=$req->img;
         $product->save();
-        return 'Bạn đã thêm thành công';
+        return Response::HTTP_OK;
     }
 
     /**
@@ -83,7 +83,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $products = Product::find($id);
-        return response()->json($products);
+        return response()->json($products,Response::HTTP_OK);
     }
 
     /**
@@ -106,25 +106,13 @@ class ProductController extends Controller
      */
     public function update(Request $req, $id)
     {
-        $name = '';        
-        if($req -> hasFile('img')){
-            $this->validate($req,[
-                'img' =>'mimes:jpg,png,jpeg|max:2048',
-            ],[
-                'img.mimes'=>'Chỉ chấp nhận files ảnh',
-                'img.max' => 'Chỉ chấp nhận files ảnh dưới 2Mb',
-
-            ]);
-            $file =$req ->file(('img'));
-            $name = time().'_'.$file->getClientOriginalName();
-            $destinationPath=public_path('images');
-            $file -> move($destinationPath, $name);
-        }
         $this->validate($req,[
+            'img' =>'mimes:jpg,png,jpeg',
             'product_name'=>'required', 
             'description'=>'required', 
             'price'=>'required', 
         ],[
+            'img.mimes'=>'Chỉ chấp nhận files ảnh',
             'product_name.required' =>'Bạn chưa nhập tên điện thoại',
             'description.required' =>'Bạn chưa nhập mô tả',
             'price.required' =>'Bạn chưa nhập giá',
@@ -138,7 +126,7 @@ class ProductController extends Controller
         $product->img=$name;
         $product->save();
 
-        return 'ok';
+        return Response::HTTP_OK;
     }
 
     /**
@@ -150,12 +138,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $products = Product::find($id);
-        $linkImage = public_path('images/') . $products->image;
-        //Xoa luon anh trong thu muc, neu ko co cau lenh nay thi khi xoa anh van con trong thu muc
-        // if (File::exists($linkImage)) {
-        //     File::delete($linkImage);
-        // }
         $products->delete();
-        return 1;
+        return Response::HTTP_OK;
     }
 }

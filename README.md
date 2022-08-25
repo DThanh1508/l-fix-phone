@@ -1,8 +1,3 @@
-## Rules
-
-### Mọi người clone rồi tự tạo nhánh riêng.
-### Sau khi họp, thống nhất với team mới push lên nhánh 'main'.
-
 ## Steps run 
 
 ### 1. "composer install"

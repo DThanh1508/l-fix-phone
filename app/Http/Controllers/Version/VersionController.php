@@ -56,7 +56,7 @@ class VersionController extends Controller
         $version->brand_id=$req->brand_id;
         $version->version_name=$req->version_name;
         $version->save();
-        return 'Bạn đã thêm thành công';
+        return Response::HTTP_OK;
     }
 
     /**
@@ -107,6 +107,6 @@ class VersionController extends Controller
         //     File::delete($linkImage);
         // }
         $products->delete();
-        return 'Ok! Xoa duoc roi:))';
+        return Response::HTTP_OK;
     }
 }
