@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use File;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -49,11 +50,11 @@ class ProductController extends Controller
     {
         $this->validate($req,[
             'img' =>'required',
-            'product_name'=>'required', 
-            'description'=>'required', 
-            'price'=>'required', 
-            'version_id'=>'required', 
-            'service_id'=>'required', 
+            'product_name'=>'required',
+            'description'=>'required',
+            'price'=>'required',
+            'version_id'=>'required',
+            'service_id'=>'required',
         ],[
             'img.required' => 'Bạn chưa chọn hình ảnh',
             'product_name.required' =>'Bạn chưa nhập tên điện thoại',
@@ -108,9 +109,9 @@ class ProductController extends Controller
     {
         $this->validate($req,[
             'img' =>'mimes:jpg,png,jpeg',
-            'product_name'=>'required', 
-            'description'=>'required', 
-            'price'=>'required', 
+            'product_name'=>'required',
+            'description'=>'required',
+            'price'=>'required',
         ],[
             'img.mimes'=>'Chỉ chấp nhận files ảnh',
             'product_name.required' =>'Bạn chưa nhập tên điện thoại',
@@ -140,5 +141,12 @@ class ProductController extends Controller
         $products = Product::find($id);
         $products->delete();
         return Response::HTTP_OK;
+    }
+    public function getAllProductByBrand($id) {
+        $products = DB::table("products as p")
+                    ->join("versions as v", "v.id", "p.version_id")
+                    ->where("v.brand_id", $id)
+                    ->get();
+        return $products;
     }
 }

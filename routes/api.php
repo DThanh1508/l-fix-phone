@@ -43,6 +43,7 @@ Route::post('/posts',[PostController::class,'store']);
 
 Route::get('/brands',[BrandController::class,'index']);
 
+Route::get("/brand/{id}/products", [ProductController::class, "getAllProductByBrand"]);
 
 
 Route::get("services", [ServiceController::class, "getAllServices"]);
